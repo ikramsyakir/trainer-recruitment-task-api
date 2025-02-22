@@ -13,7 +13,7 @@ beforeEach(function () {
 it('returns user all task', function () {
     // Create multiple tasks
     $tasks = Task::factory()->count(3)->create([
-        'user_id' => $this->user->id
+        'user_id' => $this->user->id,
     ]);
 
     // Make request to index route
