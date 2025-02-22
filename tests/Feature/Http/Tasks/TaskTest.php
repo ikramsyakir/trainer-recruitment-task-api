@@ -31,7 +31,7 @@ it('creates a new task', function () {
     $taskData = [
         'title' => 'Test Task',
         'description' => 'This is a test task',
-        'status' => Task::PENDING
+        'status' => Task::PENDING,
     ];
 
     // Make request to store route
@@ -81,7 +81,7 @@ it('returns not found when updating a non-existent task', function () {
     $response = $this->putJson(route('tasks.update', 'non-existent-id'), [
         'title' => 'Test title',
         'description' => 'Test description',
-        'status' => Task::PENDING
+        'status' => Task::PENDING,
     ]);
 
     expect($response->status())->toBe(404)
