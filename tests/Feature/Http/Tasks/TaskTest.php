@@ -10,9 +10,11 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-it('returns all tasks', function () {
+it('returns user all task', function () {
     // Create multiple tasks
-    $tasks = Task::factory()->count(3)->create();
+    $tasks = Task::factory()->count(3)->create([
+        'user_id' => $this->user->id
+    ]);
 
     // Make request to index route
     $response = $this->getJson(route('tasks.index'));
