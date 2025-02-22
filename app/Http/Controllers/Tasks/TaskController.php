@@ -7,6 +7,7 @@ use App\Http\Requests\Tasks\TaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -14,9 +15,9 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $tasks = TaskResource::collection(Task::all());
+        $tasks = TaskResource::collection($request->user()->tasks);
 
         return response()->json(['status' => true, 'tasks' => $tasks]);
     }
@@ -28,7 +29,13 @@ class TaskController extends Controller
     {
         $validated = $request->validated();
 
-        Task::create($validated);
+        Task::create([
+            'user_id' => $request->user()->id,
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'status' => $validated['status'],
+            'due_date' => $validated['due_date'],
+        ]);
 
         return response()->json(['status' => true, 'message' => 'Task successfully created'], Response::HTTP_CREATED);
     }
@@ -42,6 +49,11 @@ class TaskController extends Controller
 
         if (! $task) {
             return response()->json(['status' => false, 'message' => 'Task not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($task->user_id != auth()->user()->id) {
+            return response()->json(['status' => false, 'message' => 'Unauthorized to view this task'],
+                Response::HTTP_UNAUTHORIZED);
         }
 
         return response()->json(['status' => true, 'task' => new TaskResource($task)], Response::HTTP_OK);
@@ -60,6 +72,11 @@ class TaskController extends Controller
             return response()->json(['status' => false, 'message' => 'Task not found'], Response::HTTP_NOT_FOUND);
         }
 
+        if ($task->user_id != $request->user()->id) {
+            return response()->json(['status' => false, 'message' => 'Unauthorized to update this task'],
+                Response::HTTP_UNAUTHORIZED);
+        }
+
         $task->update($validated);
 
         return response()->json(['status' => true, 'message' => 'Task successfully updated'], Response::HTTP_OK);
@@ -74,6 +91,11 @@ class TaskController extends Controller
 
         if (! $task) {
             return response()->json(['status' => false, 'message' => 'Task not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($task->user_id != auth()->user()->id) {
+            return response()->json(['status' => false, 'message' => 'Unauthorized to delete this task'],
+                Response::HTTP_UNAUTHORIZED);
         }
 
         $task->delete();
