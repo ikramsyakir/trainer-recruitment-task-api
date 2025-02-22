@@ -50,4 +50,5 @@ The following tools are required in order to start the installation.
     php artisan migrate
     ```
 
-You can now visit the app in your browser by visiting [https://trainer-recruitment-task-api.test](http://magnetize.test)
+You can now visit the app in your browser by
+visiting [https://trainer-recruitment-task-api.test](http://trainer-recruitment-task-api.test)
