@@ -52,3 +52,17 @@ The following tools are required in order to start the installation.
 
 You can now visit the app in your browser by
 visiting [https://trainer-recruitment-task-api.test](http://trainer-recruitment-task-api.test)
+
+## 📡 Available APIs
+
+### Authentication
+- **Login**: [POST] `/api/login`
+- **Register**: [POST] `/api/register`
+- **Logout**: [GET] `/api/logout`
+
+### Tasks
+- **List All Task**: [GET] `/api/tasks`
+- **Create Task**: [POST] `/api/tasks`
+- **View Task**: [GET] `/api/tasks/{id}`
+- **Update Task**: [PUT] `/api/tasks/{id}`
+- **Delete Task**: [DELETE] `/api/tasks/{id}`
