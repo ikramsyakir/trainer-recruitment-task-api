@@ -14,11 +14,14 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('status')->default(Task::PENDING);
             $table->date('due_date')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
